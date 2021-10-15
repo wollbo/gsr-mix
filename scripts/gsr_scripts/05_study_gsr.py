@@ -2,6 +2,7 @@ import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import math
+from datetime import datetime
 
 window = 10000
 horizon = 50
@@ -68,6 +69,8 @@ def predict_MA(data, ewm1, ewm2):
 
 def main():
     gsr = pd.read_csv(f'data/gsr_{window}')['GSR']
+    times = pd.read_csv(f'data/gsr_{window}')['updated_at']
+    times = [datetime.fromtimestamp(time) for time in times]
     #labels = label_with_barrier(gsr, horizon, barrier_weights=weights)
 
     exp1 = gsr.ewm(span=span1, adjust=False).mean()
@@ -85,15 +88,18 @@ def main():
 
     # plot it
     f, (a0, a1) = plt.subplots(2, 1, gridspec_kw={'height_ratios': [2, 1]}, sharex=True)
-    a0.plot(gsr)
-    a0.plot(exp2)
-    a0.plot(exp1)
-    a0.plot(label_gsr_1, marker='^', linewidth=0, color='g')
-    a0.plot(label_gsr_0, marker='v', linewidth=0, color='r')
+    a0.plot(times, gsr)
+    a0.plot(times, exp2)
+    a0.plot(times, exp1)
+    a0.plot(times, label_gsr_1, marker='^', linewidth=0, color='g')
+    a0.plot(times, label_gsr_0, marker='v', linewidth=0, color='r')
 
     #a1.plot(macd)
     #a1.plot(exp3)
-    a1.plot(derv)
-    a1.plot(derv2)
+
+    d1 = pd.concat([pd.Series(derv.iloc[0]), derv, pd.Series(derv.iloc[-1])])
+    d2 = pd.concat([pd.Series(derv2.iloc[0]), pd.Series(derv2.iloc[0]), pd.Series(derv2.iloc[0]), derv2, pd.Series(derv.iloc[-1])])
+    a1.plot(times, d1)
+    a1.plot(times, d2)
 
     plt.show()
