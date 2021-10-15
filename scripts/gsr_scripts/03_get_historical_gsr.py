@@ -3,7 +3,7 @@ from brownie import GSRConsumer
 import pandas as pd
 
 
-window = 100
+window = 10000
 
 def find_window_entries(df, query='get_historical_xau', window=100):
     """Returns df with the latest len(window) values for the selected query"""

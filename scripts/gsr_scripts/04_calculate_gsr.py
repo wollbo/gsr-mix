@@ -5,8 +5,8 @@ window = 10000
 
 def main():
 
-    xau = pd.read_csv(f'xau_{window}', index_col=0)[::-1]
-    xag = pd.read_csv(f'xag_{window}', index_col=0)[::-1]
+    xau = pd.read_csv(f'data/xau_{window}', index_col=0)[::-1]
+    xag = pd.read_csv(f'data/xag_{window}', index_col=0)[::-1]
 
     xau = xau.drop_duplicates(subset=['XA/USD'], keep='first')
     xag = xag.drop_duplicates(subset=['XA/USD'], keep='first') # may drop randomly identical rows, however improbable
@@ -32,4 +32,4 @@ def main():
             i_xag += 1
 
     gsr_df = gsr_df.reset_index(drop=True).rename(columns={'XA/USD': 'GSR'})
-    gsr_df.to_csv(f'gsr_{window}', index=False)
+    gsr_df.to_csv(f'data/gsr_{window}', index=False)
