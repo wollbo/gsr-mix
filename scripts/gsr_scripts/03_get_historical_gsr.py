@@ -11,9 +11,9 @@ def find_window_entries(df, query='get_historical_xau', window=100):
     try:
         df_old = pd.read_csv(f'data/{query.rsplit("_")[-1]}_{window}')
         first_round = int(df_old["round_id"][0])
-        print('using old data')
+        print('trying to use old data')
     except:
-        print('no old data')
+        print('no old data available')
         first_round = 0
     i = 1  # round_ids are not necessarily incremental
     tup = (df['round_id'].iloc[-1],)

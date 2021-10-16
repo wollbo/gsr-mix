@@ -14,12 +14,13 @@ def main():
     earliest = max(xau['updated_at'].iloc[0], xag['updated_at'].iloc[0])
     latest = min(xau['updated_at'].iloc[-1], xag['updated_at'].iloc[-1]) # keep common intervals
 
-    i_xau = 0
-    i_xag = 0
+    i_xau = xau['updated_at'].rsub(earliest).abs().values.argmin() # finds indices at earliest
+    i_xag = xag['updated_at'].rsub(earliest).abs().values.argmin()
 
     gsr_df = pd.DataFrame(columns=xau.columns)
 
     for i in range(earliest, latest):
+        
         if xau['updated_at'].iloc[i_xau] == i or xag['updated_at'].iloc[i_xag] == i:
             idx = np.argmin([xau['updated_at'].iloc[i_xau], xag['updated_at'].iloc[i_xag]])
             gsr_df = gsr_df.append([[xau.iloc[i_xau], xag.iloc[i_xag]][idx]])

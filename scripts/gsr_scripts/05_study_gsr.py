@@ -5,6 +5,7 @@ import math
 from datetime import datetime
 
 window = 10000
+use_datetime = True
 horizon = 50
 weights = [2, 1]
 span1 = 50
@@ -69,8 +70,12 @@ def predict_MA(data, ewm1, ewm2):
 
 def main():
     gsr = pd.read_csv(f'data/gsr_{window}')['GSR']
-    times = pd.read_csv(f'data/gsr_{window}')['updated_at']
-    times = [datetime.fromtimestamp(time) for time in times]
+
+    if use_datetime:
+        times = pd.read_csv(f'data/gsr_{window}')['updated_at']
+        times = [datetime.fromtimestamp(time) for time in times]
+    else:
+        times = np.arange(0, len(gsr))
     #labels = label_with_barrier(gsr, horizon, barrier_weights=weights)
 
     exp1 = gsr.ewm(span=span1, adjust=False).mean()
